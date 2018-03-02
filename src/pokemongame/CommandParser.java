@@ -10,14 +10,16 @@ import java.util.*;
  *
  * @author macbook
  */
-public class CommandParser {
-    private PokemonFarm pokemonFarm;
-    private Bag bag;
+public class CommandParser{
+	private PokemonFarm pokemonFarm;
+        private Bag bag;
+        private RandomPokemon randoms;
 	private Scanner commandScanner;
 	private boolean isRunning;
-
+        private ArrayList<Pokemon> pokemonsBag;
 	public CommandParser(PokemonFarm pokemonFarm){
 		this.pokemonFarm = pokemonFarm;
+                bag=new Bag();
 		commandScanner = new Scanner(System.in);
 		isRunning = false;
 	}
@@ -42,10 +44,11 @@ public class CommandParser {
 			else if(command.equals("feed"))
 				this.feedPokemons();
                         else if(command.equals("exercise"))
-				this.exercisePokemons();
-                        else if(command.equals("cath"))
-				this.cathPokemons();        
-                        
+                                this.exercisePokemons();
+                        else if(command.equals("fight"))
+                                this.upLevel();
+                        else if(command.equals("catch"))
+                                this.catchPokemons();
 		}
 
 	}
@@ -53,37 +56,39 @@ public class CommandParser {
 	private void addPokemon(){
 		//commandScanner.nextLine();
 		// input name weight length
-                System.out.print("PokemonType: ");
-		String pokemonType = commandScanner.next();
-                System.out.print("Name: ");
-		String name = commandScanner.next();
-                System.out.print("Weight: ");
-		float weight = commandScanner.nextFloat();
-                System.out.print("StepLength: ");
-		float stepLength = commandScanner.nextFloat();
-
+                System.out.print("Pokemon: ");
+		String pokemonType =commandScanner.next();
+                System.out.print("Pokemon name: ");
+		String name =commandScanner.next();
+                System.out.print("Pokemon weight: ");
+		float weight =commandScanner.nextFloat();
+                System.out.print("Pokemon stepLength: ");
+		float stepLength =commandScanner.nextFloat();
+               
+                int level=1;
+                
 		if(pokemonType.equals("Eevee")){
-			Eevee eevee = new Eevee(name, weight, stepLength);
+			Eevee eevee = new Eevee(name, weight,stepLength,level);
 			pokemonFarm.addPokemon(eevee);
 		}
+                else if(pokemonType.equals("Chansay")){
+			Chansay chansay = new Chansay(name, weight, stepLength,level);
+			pokemonFarm.addPokemon(chansay);
+		}
                 else if(pokemonType.equals("Charmander")){
-			Charmander charmander = new Charmander(name, weight, stepLength);
+			Charmander charmander = new Charmander(name, weight, stepLength,level);
 			pokemonFarm.addPokemon(charmander);
 		}
-                else if(pokemonType.equals("Chansey")){
-			Chansey chansey = new Chansey(name, weight, stepLength);
-			pokemonFarm.addPokemon(chansey);
-                }     
-                else {
-                         System.out.print("No pokemonType in Farm!! ");   
-                }
+
 	}
 
 	private void listPokemons(){
 		System.out.println("==========================================");
 		System.out.println("Pokemon List");
 		System.out.println("==========================================");
+                System.out.println("ในคอมมานก่อนใช้");
 		this.pokemonFarm.list();
+                System.out.println("ในคอมมานหลังใช้");
 		System.out.println("==========================================");
 	}
 
@@ -97,7 +102,7 @@ public class CommandParser {
                         this.pokemonFarm.feed(name);
                 }
 	}
-        
+
         private void exercisePokemons(){
             System.out.print("Which pokemon do you want to exercise? ");
 		String name = this.commandScanner.next();
@@ -108,11 +113,42 @@ public class CommandParser {
                         this.pokemonFarm.exercise(name);
                 }
         }
-    
-        private void cathPokemons(){
-            bag = new Bag();
-            bag.random();
+        private void upLevel(){
+            System.out.print("Which pokemon do you want to fight? ");
+		String name = this.commandScanner.next();
+               if(name.equals("all")){
+			this.pokemonFarm.fight("all");
+		}
+                else{
+                        this.pokemonFarm.fight(name);
+                }
+       }
+        
+        private void catchPokemons(){
+            
+           
+            int i=1;
+            while(i==1){
+                randoms = new RandomPokemon();
+
+                System.out.print("What do you want find or quit ?: ");
+                String ans= this.commandScanner.next();
+                if(ans.equals("find")){
+                    this.randoms.find();
+                }
+                else if(ans.equals("quit")){
+                    
+                    int length =(this.bag).getLength();
+                   
+           
+                    for(i=0;i<length;i++){
+                        
+                        pokemonFarm.addPokemon(this.bag.getPoke(i)); 
+                    }
+               
+                    i=0;
+                }
+            }
             
         }
-    
 }

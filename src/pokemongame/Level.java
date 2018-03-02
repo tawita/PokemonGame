@@ -9,10 +9,6 @@ package pokemongame;
  *
  * @author macbook
  */
-class Eevee extends Pokemon {
-    public Eevee(String name, float weight, float stepLength,int level){
-	super(name, weight, stepLength,level, 1f, new String[] {"normal"});
-    }
-        
-   
+public class Level {
+    
 }

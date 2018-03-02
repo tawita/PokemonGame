@@ -10,7 +10,7 @@ package pokemongame;
  * @author macbook
  */
 class Charmander extends Pokemon {
-    public Charmander(String name, float weight, float stepLength){
-	super(name, weight, stepLength, 1f, new String[] {"fire"});
+    public Charmander(String name, float weight, float stepLength,int level){
+	super(name, weight, stepLength, level, 1f, new String[] {"fire"});
     }
 }
